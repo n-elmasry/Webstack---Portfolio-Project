@@ -75,6 +75,7 @@ def search_listings(request):
 @login_required
 def book_listing(request, listing_id):
     listing = get_object_or_404(Listing, id=listing_id)
+    total_price = None
 
     if not listing.available:
         messages.error(
@@ -88,7 +89,8 @@ def book_listing(request, listing_id):
             booking.guest = request.user
             booking.listing = listing
 
-            booking.total_price = booking.calc_total_price()
+            total_price = booking.calc_total_price()
+            booking.total_price = total_price
 
             # Check for availability
             if not Booking.objects.filter(
@@ -97,8 +99,9 @@ def book_listing(request, listing_id):
                 end_date__gt=booking.start_date
             ).exists():
                 booking.save()
+                total_price = booking.calc_total_price()
                 messages.success(request, 'Booking confirmed!')
-                return redirect('listing_detail', listing_id=listing.id)
+                return render(request, 'main/book_listing.html', {'listing': listing, 'form': form, 'total_price': total_price})
             else:
                 messages.error(
                     request, 'The stay is not available for these dates. Please choose different dates.')

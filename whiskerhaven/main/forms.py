@@ -18,7 +18,7 @@ class BookingForm(forms.ModelForm):
             'end_date': forms.SelectDateWidget(),
         }
 
-    def clean(slef):
+    def clean(self):
         cleaned_data = super().clean()
         start_date = cleaned_data.get("start_date")
         end_date = cleaned_data.get("end_date")
