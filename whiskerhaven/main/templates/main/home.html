@@ -1,0 +1,38 @@
+{% extends "main/base.html" %}
+
+{% block title %}
+Home
+{% endblock %}
+
+{% block content %}
+
+<!-- Search form -->
+<div class="search-form mb-4">
+    <form method="GET" class="d-flex justify-content-center">
+        <div class="col-md-6">
+            <input type="text" name="location" class="form-control me-2" placeholder="Enter location" aria-label="Search">
+        </div>
+        <button type="submit" class="btn btn-primary">Search</button>
+    </form>
+</div>
+
+
+<!-- Display available listings in a grid -->
+<h2 style="font-family: 'Amatic SC', cursive; font-size: 27px;">Find the perfect host for your furry friend!</h2>
+<div class="row">
+    {% for listing in listings %}
+        <div class="col-md-4 mb-4">
+            <div class="card">
+                <img src="{{ listing.image.url }}" class="card-img-top" alt="{{ listing.title }}">
+                <div class="card-body text-center">
+                    <h5 class="card-title"><a href="{% url 'listing_detail' listing.id %}">{{ listing.title }}</a></h5>
+                    <p class="card-text">{{ listing.location }}</p>
+                    <p class="card-text"><strong>${{ listing.price_per_day }} per night</strong></p>
+                </div>
+            </div>
+        </div>
+    {% empty %}
+        <p>No stays found for this location.</p>
+    {% endfor %}
+</div>
+{% endblock %}

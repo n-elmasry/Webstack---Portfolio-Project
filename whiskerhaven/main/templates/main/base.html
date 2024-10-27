@@ -1,0 +1,208 @@
+<!doctype html>
+<html>
+    <head>
+        <style type="text/css">
+            /* Enhanced Sidebar Style */
+            .sidenav {
+                height: 100%;
+                width: 200px;
+                position: fixed;
+                top: 0;
+                left: 0;
+                background: linear-gradient(145deg, #1e1e1e, #333);
+                color: #ffffff;
+                overflow-x: hidden;
+                padding-top: 30px;
+                box-shadow: 2px 0 8px rgba(0, 0, 0, 0.3);
+                font-family: 'Nunito', sans-serif;
+            }
+
+            .sidenav a, .logout-btn {
+                padding: 12px 20px;
+                font-size: 18px;
+                color: #b0b0b0;
+                text-decoration: none;
+                display: flex;
+                align-items: center;
+                transition: 0.3s;
+            }
+            .sidenav a i, .logout-btn i {
+                margin-right: 10px;
+
+            }
+
+
+            .sidenav a:hover, .logout-btn:hover {
+                color: #f1f1f1;
+                background: rgba(255, 255, 255, 0.1);
+                border-radius: 4px;
+                text-decoration: none;
+            }
+
+            .logout-btn {
+                margin-top: 10px;
+                background: transparent;
+                border: none;
+                cursor: pointer;
+                font-size: 18px;
+                color: #b0b0b0;
+                width: 100%;
+                text-align: left;
+            }
+
+            .logout-btn:focus {
+                outline: none;
+            }
+
+            .main {
+                margin-left: 200px;
+                padding: 0px 10px;
+            }
+
+            /* Existing styles for main content */
+            .title-container {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                margin-top: 5px;
+            }
+
+            .title-container h1 {
+                font-family: 'Lobster', cursive;
+                font-size: 56px;
+                color: #222;
+                text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.4);
+                margin-right: 15px;
+            }
+
+            .title-container img.icon {
+                width: 80px;
+                height: auto;
+                filter: drop-shadow(3px 3px 5px rgba(0, 0, 0, 0.4));
+            }
+
+            .title-line {
+                border: none;
+                border-top: 2px solid #888;
+                width: 85%;
+                margin: 5px auto 30px auto;
+            }
+            .card {
+                border: none;
+                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+                transition: transform 0.3s ease;
+
+            }
+
+            .card:hover {
+                transform: scale(1.05);
+            }
+
+            .card-img-top {
+                height: 200px;
+                object-fit: cover;
+            }
+
+            .card-title {
+                font-family: 'Lobster', cursive;
+                color: #333;
+            }
+
+            .btn-success {
+                background-color: #28a745;
+                border: none;
+            }
+            .no-hover:hover {
+                transform: none !important;
+            }
+
+            .search-box {
+                display: flex;
+                align-items: center;
+                margin-top: 20px;
+            }
+
+            .search-button:hover {
+                background-color: #0056b3;
+            }
+
+
+        </style>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+        <link href="https://fonts.googleapis.com/css2?family=Lobster&display=swap" rel="stylesheet">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+        <link href="https://fonts.googleapis.com/css2?family=Amatic+SC&display=swap" rel="stylesheet">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+        <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;700&display=swap" rel="stylesheet">
+        <title>{% block title %}WhiskerHaven{% endblock %}</title>
+        {% load static %}
+    </head>
+
+    <body>
+        <!-- Enhanced Sidebar with Icons -->
+        <div class="sidenav">
+            <a href="/home"><i class="fas fa-home"></i> Home</a>
+            {% if user.is_staff %}
+                <a href="{% url 'create_listing' %}"><i class="fas fa-plus-circle"></i> Add New Stay</a>
+                <a href="{% url 'manage_listings' %}"><i class="fas fa-cog"></i> Manage Stays</a>
+            {% endif %}
+            {% if user.is_authenticated %}
+                <a href="{% url 'my_bookings' %}"><i class="fas fa-calendar-alt"></i> My Bookings</a>
+            {% else %}
+                <a href="/register"><i class="fas fa-user-plus"></i> Register</a>
+                <a href="{% url 'login' %}"><i class="fas fa-sign-in-alt"></i> Login</a>
+            {% endif %}
+            <a href="{% url 'about_us' %}"><i class="fas fa-info-circle"></i> About Us</a>
+            {% if user.is_authenticated %}
+                <form action="{% url 'logout' %}" method="post" style="display:inline;">
+                    {% csrf_token %}
+                    <button type="submit" class="logout-btn"><i class="fas fa-sign-out-alt"></i> Logout</button>
+                </form>
+            {% endif %}
+        </div>
+
+        <div id="content" name="content" class="main">
+            <div class="row justify-content-center">
+                <div class="col-9">
+                    <div class="title-container">
+                        <h1>WhiskerHaven</h1>
+                        <img class="icon" src="{% static 'images/whiskers_icon.png' %}" alt="Whiskers Icon">
+                    </div>
+                    <hr class="title-line">
+                    {% if messages %}
+                        <div class="alert-messages">
+                            {% for message in messages %}
+                                {% if message.tags == "success" %}
+                                    <div class="alert alert-success alert-dismissible d-flex align-items-center fade show" role="alert">
+                                        <i class="bi-check-circle-fill"></i>
+                                        <strong class="mx-2">Success!</strong> {{ message }}
+                                    </div>
+                                {% elif message.tags == "error" %}
+                                    <div class="alert alert-danger alert-dismissible d-flex align-items-center fade show" role="alert">
+                                        <i class="bi-exclamation-octagon-fill"></i>
+                                        <strong class="mx-2">Error!</strong> {{ message }}
+                                    </div>
+                                {% else %}
+                                    <div class="alert alert-info" role="alert">
+                                        {{ message }}
+                                    </div>
+                                {% endif %}
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+
+                    {% block content %}
+                    <p>base template</p>
+                    {% endblock %}
+                </div>
+            </div>
+        </div>
+
+        <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.7/dist/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwr7x9JvoRxT2MZw1T" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+    </body>
+</html>

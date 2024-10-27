@@ -1,0 +1,19 @@
+{% extends "main/base.html" %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2 class="mb-4">Book {{ listing.title }}</h2>
+    <form method="post" class="border p-4 rounded shadow">
+        {% csrf_token %}
+        <div class="form-group">
+            {{ form.as_p }}
+        </div>
+        <button type="submit" class="btn btn-primary">Book Now</button>
+    </form>
+
+    <!-- Display the total price calculated on the server side -->
+    <div class="alert alert-info mt-3">
+        <strong>Total Price:</strong> $<span id="price">{{ total_price|floatformat:2 }}</span> <!-- Display calculated total price -->
+    </div>
+</div>
+{% endblock %}

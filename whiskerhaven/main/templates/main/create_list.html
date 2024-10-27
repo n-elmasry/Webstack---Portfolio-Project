@@ -1,0 +1,21 @@
+{% extends "main/base.html" %}
+
+{% block title %}Add New Stay{% endblock %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+<div class="container d-flex justify-content-center align-items-center" style="min-height: 80vh;">
+    <div style="width: 100%; max-width: 500px; padding: 20px;">
+        <h2 class="text-center mb-4" style="color: #444444; text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2); font-weight: bold;">
+            Add a New Stay
+        </h2>
+        <form method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            {{ form|crispy }}
+            <div class="text-center mt-4">
+                <button type="submit" class="btn btn-primary btn-block">Add Stay</button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}
