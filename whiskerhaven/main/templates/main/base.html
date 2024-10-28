@@ -153,7 +153,7 @@
                 <a href="{% url 'my_bookings' %}"><i class="fas fa-calendar-alt"></i> My Bookings</a>
             {% else %}
                 <a href="/register"><i class="fas fa-user-plus"></i> Register</a>
-                <a href="{% url 'login' %}"><i class="fas fa-sign-in-alt"></i> Login</a>
+                <a href="{% url 'login' %}"><i class="fas fa-sign-in-alt"></i> Log in</a>
             {% endif %}
             <a href="{% url 'about_us' %}"><i class="fas fa-info-circle"></i> About Us</a>
             {% if user.is_authenticated %}
