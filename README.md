@@ -83,4 +83,3 @@ If you'd like to contribute to WhiskerHaven, please follow these steps:
 This project is proprietary and all rights are reserved by the creator. Unauthorized use, distribution, or modification of this code is strictly prohibited. For permissions or inquiries, please contact [almassrynada411@gmail.com].
 
 Copyright (c) 2024 NADA ELMASRY
-All rights reserved.
